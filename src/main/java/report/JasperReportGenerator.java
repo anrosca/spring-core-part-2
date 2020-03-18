@@ -4,16 +4,20 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
+@Component("JasperReportGenerator")
 public class JasperReportGenerator {
 
     private static final String REPORT_TEMPLATE_PATH = "/reportTemplate.jrxml";
 
+    @Cacheable("report")
     public byte[] generate(WeatherStation weatherStation, String cityName, LocalDate date) {
         try {
             System.out.println("Generating report: " + date + ", " + cityName);

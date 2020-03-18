@@ -1,15 +1,17 @@
 package report;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
+@RequiredArgsConstructor
 public class WeatherStation {
     private final Thermometer thermometer;
 
-    public WeatherStation(Thermometer thermometer) {
-        this.thermometer = thermometer;
-    }
 
     public List<WeatherData> getMeasurementsFor(String cityName, LocalDate date) {
         List<WeatherData> weatherData = new ArrayList<>();
