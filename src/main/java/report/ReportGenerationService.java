@@ -1,45 +1,45 @@
 package report;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-@Service("ReportGenerationService")
-//@Validated
+@Service
+@Validated
+@RequiredArgsConstructor
 public class ReportGenerationService {
+    private static final String REPORT_FILE_NAME_PREFIX = "reports/";
+    private static final String REPORT_FILE_NAME_SUFFIX = "_temperature.pdf";
 
+    private final JasperReportGenerator reportGenerator;
+    private final WeatherStation weatherStation;
 
-    private ReportGenerationContext context;
-
-//    @Autowired
-    public ReportGenerationService(ReportGenerationContext context) {
-        this.context = context;
+    public Report generateReportFor(@Past @NotNull LocalDate date, @Size(min = 2) String cityName) {
+        try {
+            byte[] reportContent = reportGenerator.generate(weatherStation, cityName, date);
+            return Report.builder()
+                    .content(reportContent)
+                    .fileName(generateFileName(date))
+                    .build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-//    public ReportGenerationService() {
-//    }
-
-//    @Autowired
-    public void setContext(ReportGenerationContext context) {
-        this.context = context;
-    }
-
-//    @Async()
-    public void generateReport(/*@Past @NotNull*/ LocalDate date, String cityName) {
-        System.out.println("Thread name: " +Thread.currentThread().getName());
-        context.generateReportFor(date, cityName);
+    private String generateFileName(LocalDate date) {
+        return REPORT_FILE_NAME_PREFIX + date + REPORT_FILE_NAME_SUFFIX;
     }
 
     public void generateMonthlyReports(String cityName) {
         LocalDate date = LocalDate.now().minusMonths(1);
         if (date.getDayOfMonth() == 1) {
             for (int day = 1; day <= date.lengthOfMonth(); ++day) {
-                generateReport(date.withDayOfMonth(day), cityName);
+                generateReportFor(date.withDayOfMonth(day), cityName);
             }
         }
     }

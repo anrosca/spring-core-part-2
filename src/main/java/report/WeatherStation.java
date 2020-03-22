@@ -12,7 +12,6 @@ import java.util.List;
 public class WeatherStation {
     private final Thermometer thermometer;
 
-
     public List<WeatherData> getMeasurementsFor(String cityName, LocalDate date) {
         List<WeatherData> weatherData = new ArrayList<>();
         Temperature temperature = thermometer.getCurrentTemperature();
