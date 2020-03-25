@@ -1,4 +1,4 @@
-package report;
+package com.endava.weather.report;
 
 import org.springframework.stereotype.Component;
 

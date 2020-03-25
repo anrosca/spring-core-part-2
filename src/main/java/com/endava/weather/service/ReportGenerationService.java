@@ -1,13 +1,13 @@
-package report;
+package com.endava.weather.service;
 
+import com.endava.weather.report.Report;
+import com.endava.weather.report.WeatherStation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 @Validated
@@ -19,8 +19,13 @@ public class ReportGenerationService {
     private final JasperReportGenerator reportGenerator;
     private final WeatherStation weatherStation;
 
-    public Report generateReportFor(@Past @NotNull LocalDate date, @Size(min = 2) String cityName) {
+    public Report blah(LocalDate date, String cityName) {
+        return this.generateReportFor(date, cityName);
+    }
+
+    public Report generateReportFor(LocalDate date, String cityName) {
         try {
+//            System.out.println("Starting generating report: " + LocalDateTime.now());
             byte[] reportContent = reportGenerator.generate(weatherStation, cityName, date);
             return Report.builder()
                     .content(reportContent)
@@ -28,7 +33,9 @@ public class ReportGenerationService {
                     .build();
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
+        } /*finally {
+//            System.out.println("Report was generated: " + LocalDateTime.now());
+        }*/
     }
 
     private String generateFileName(LocalDate date) {
@@ -47,7 +54,5 @@ public class ReportGenerationService {
     private boolean isInvalidDate(LocalDate date) {
         return date == null;
     }
-
-    public static class InvalidDateException extends RuntimeException {
-    }
 }
+

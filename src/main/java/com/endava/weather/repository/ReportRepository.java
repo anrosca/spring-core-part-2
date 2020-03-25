@@ -1,5 +1,6 @@
-package report;
+package com.endava.weather.repository;
 
+import com.endava.weather.report.Report;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,9 +20,9 @@ public class ReportRepository {
 
     private static final RowMapper<Report> REPORT_ROW_MAPPER = (rs, rowNum) -> Report.builder()
             .id(rs.getLong("id"))
-            .creationTimestamp(rs.getTimestamp(2).toLocalDateTime())
-            .content(rs.getBytes(3))
-            .fileName(rs.getString(4))
+            .creationTimestamp(rs.getTimestamp("creation_timestamp").toLocalDateTime())
+            .content(rs.getBytes("content"))
+            .fileName(rs.getString("file_name"))
             .build();
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -32,17 +33,17 @@ public class ReportRepository {
     }
 
     public Report save(Report report) {
-        String sql = "insert into reports.report(creation_timestamp, content, file_name) " +
-                "values (:creation_timestamp, :content, :file_name)";
+        String sql = "insert into reports.report(creation_timestamp, content, file_name) values " +
+                "(:timestamp, :content, :file_name)";
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         Timestamp timestamp = new Timestamp(new Date().getTime());
-        report.setCreationTimestamp(timestamp.toLocalDateTime());
-        parameterSource.addValue("creation_timestamp", timestamp);
+        parameterSource.addValue("timestamp", timestamp);
         parameterSource.addValue("content", report.getContent());
         parameterSource.addValue("file_name", report.getFileName());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameterSource, keyHolder);
         report.setId((Long) keyHolder.getKeys().get("id"));
+        report.setCreationTimestamp(timestamp.toLocalDateTime());
         return report;
     }
 

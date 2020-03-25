@@ -41,9 +41,6 @@
                     <schemas>
                         <schema>reports</schema>
                     </schemas>
-                    <!--                    <locations>-->
-                    <!--                        <location>db/migration</location>-->
-                    <!--                    </locations>-->
                 </configuration>
             </plugin>
             <plugin>

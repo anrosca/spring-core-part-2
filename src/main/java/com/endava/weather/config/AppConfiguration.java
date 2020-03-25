@@ -1,4 +1,4 @@
-package report;
+package com.endava.weather.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
@@ -8,7 +8,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackages = "report")
+@ComponentScan(basePackages = "com.endava")
 @PropertySource("classpath:application.properties")
 @EnableAspectJAutoProxy
 public class AppConfiguration {
@@ -36,7 +36,7 @@ public class AppConfiguration {
     }
 
     @Bean
-    public NamedParameterJdbcTemplate jdbcTemplate(DataSource dataSource) {
-        return new NamedParameterJdbcTemplate(dataSource);
+    public NamedParameterJdbcTemplate jdbcTemplate() {
+        return new NamedParameterJdbcTemplate(dataSource());
     }
 }

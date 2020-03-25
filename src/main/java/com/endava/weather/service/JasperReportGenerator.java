@@ -1,10 +1,10 @@
-package report;
+package com.endava.weather.service;
 
+import com.endava.weather.report.WeatherData;
+import com.endava.weather.report.WeatherStation;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +30,6 @@ public class JasperReportGenerator {
     private byte[] tryGenerateReport(WeatherStation weatherStation, String cityName, LocalDate date) throws JRException {
         List<WeatherData> weatherData = weatherStation.getMeasurementsFor(cityName, date);
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(weatherData);
-//        JasperDesign jasperDesign = JRXmlLoader.load(getClass().getResourceAsStream(REPORT_TEMPLATE_PATH));
         JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(REPORT_TEMPLATE_PATH));
         return fillAndExportReport(dataSource, jasperReport);
     }

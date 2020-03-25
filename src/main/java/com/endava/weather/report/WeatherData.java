@@ -1,4 +1,4 @@
-package report;
+package com.endava.weather.report;
 
 public class WeatherData {
     private String title;

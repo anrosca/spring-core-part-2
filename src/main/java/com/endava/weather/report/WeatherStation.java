@@ -1,4 +1,4 @@
-package report;
+package com.endava.weather.report;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
