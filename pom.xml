@@ -14,7 +14,7 @@
         <spring.version>5.2.4.RELEASE</spring.version>
         <junit.version>5.6.0</junit.version>
         <mockito.version>3.2.4</mockito.version>
-        <postgresql.version>42.2.11</postgresql.version>
+        <postgresql.version>42.3.3</postgresql.version>
 
         <!-- Flyway properties -->
         <flyway.user>postgres</flyway.user>
