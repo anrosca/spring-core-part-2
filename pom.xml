@@ -11,7 +11,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <spring.version>5.2.4.RELEASE</spring.version>
+        <spring.version>5.3.19</spring.version>
         <junit.version>5.6.0</junit.version>
         <mockito.version>3.2.4</mockito.version>
         <postgresql.version>42.2.11</postgresql.version>
